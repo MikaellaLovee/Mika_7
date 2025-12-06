@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Functions Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blue-light: #3498db;
+            --blue-dark: #2980b9;
+            --red: #e74c3c;
+            --black: #2c3e50;
+            --white: #ecf0f1;
+            --gray: #bdc3c7;
+            --bg-light: #f9f9f9;
+            --border: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background-color: white;
+            color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Навигация */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 0;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            color: var(--blue-light);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link {
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--blue-light);
+        }
+        
+        .nav-link.active {
+            color: var(--blue-light);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -24px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--blue-light);
+            border-radius: 2px 2px 0 0;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .btn-outline {
+            padding: 10px 20px;
+            border: 2px solid var(--blue-light);
+            border-radius: 8px;
+            color: var(--blue-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        
+        .btn-outline:hover {
+            background: var(--blue-light);
+            color: white;
+        }
+        
+        .btn-primary {
+            padding: 10px 24px;
+            background: var(--blue-light);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: var(--blue-dark);
+        }
+        
+        /* Герой секция */
+        .hero {
+            padding: 160px 24px 80px;
+            text-align: center;
+            background: linear-gradient(to bottom, white, var(--bg-light));
+        }
+        
+        .hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--black);
+            line-height: 1.1;
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+        
+        /* Основной контент */
+        .section {
+            padding: 80px 24px;
+            background: white;
+        }
+        
+        .section:nth-child(even) {
+            background: var(--bg-light);
+        }
+        
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--black);
+        }
+        
+        .section-description {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Сетка функций - ПОЛНОСТЬЮ ЦЕНТРИРОВАННАЯ */
+        .functions-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .function-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .function-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            border-color: var(--blue-light);
+        }
+        
+        .card-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--red);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--black);
+            width: 100%;
+        }
+        
+        .card-subtitle {
+            color: #666;
+            font-size: 14px;
+            width: 100%;
+        }
+        
+        /* Элементы форм */
+        .input-group {
+            margin-bottom: 16px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--black);
+            width: 100%;
+            text-align: center;
+        }
+        
+        .form-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border 0.2s;
+            text-align: center;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .btn-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 14px;
+            background: var(--red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-card:hover {
+            background: #c0392b;
+        }
+        
+        .result-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--red);
+            display: none;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .result-container.show {
+            display: block;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--black);
+            text-align: center;
+        }
+        
+        .result-content {
+            color: #666;
+            font-family: 'SF Mono', monospace;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        /* Функция logEven специфичные стили */
+        .console-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 16px;
+            font-family: 'SF Mono', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            width: 100%;
+            text-align: left;
+        }
+        
+        .console-line {
+            margin-bottom: 4px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .console-prompt {
+            color: #569cd6;
+            margin-right: 8px;
+        }
+        
+        .console-even {
+            color: #4ec9b0;
+        }
+        
+        /* Футер */
+        footer {
+            background: var(--black);
+            color: white;
+            padding: 80px 24px 40px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .footer-links {
+            list-style: none;
+            text-align: center;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 14px;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .copyright {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        .social-link {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.2s;
+        }
+        
+        .social-link:hover {
+            color: white;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 16px;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 40px;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+            
+            .functions-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .function-card {
+                max-width: 100%;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+        
+        /* Утилиты */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--blue-light);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+            text-align: center;
+        }
+        
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .highlight {
+            color: var(--red);
+            font-weight: 600;
+        }
+        
+        .error-message {
+            color: var(--red);
+            background: rgba(231, 76, 60, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-code logo-icon"></i>
+                JS Functions
+            </a>
+            
+            <div class="nav-menu">
+                <a href="#functions" class="nav-link active">Функции</a>
+            </div>
+            
+            <div class="header-actions"></div>
+        </div>
+    </header>
+
+    <!-- Герой секция -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1>Изучайте JavaScript с помощью интерактивных примеров</h1>
+            <p class="hero-subtitle">
+                Тестируйте функции JavaScript в реальном времени. Изменяйте параметры, наблюдайте результаты и изучайте тонкости языка через практику.
+            </p>
+            <div class="hero-actions">
+                <a href="#functions" class="btn-primary">Начать работу</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция функций -->
+    <section class="section" id="functions">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Демонстрация функций</h2>
+                <p class="section-description">
+                    Изучайте работу JavaScript функций через интерактивные примеры. Изменяйте параметры и наблюдайте результаты.
+                </p>
+            </div>
+            
+            <div class="functions-grid">
+                <!-- Функция logEven -->
+                <div class="function-card" id="logEven">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Функция logEven()</h3>
+                            <p class="card-subtitle">Выводит только чётные числа из массива в консоль</p>
+                            <div class="tag">Массивы, Фильтрация</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Введите массив чисел (через запятую):</label>
+                        <input type="text" class="form-input" id="logEvenInput" value="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15">
+                    </div>
+                    
+                    <button class="btn-card" id="logEvenBtn">
+                        <i class="fas fa-play"></i> Запустить функцию logEven
+                    </button>
+                    
+                    <div class="result-container fade-in" id="logEvenResult" style="display: none;">
+                        <div class="result-title">Результат выполнения функции</div>
+                        <div class="result-content">
+                            <div class="console-output" id="logEvenConsole">
+                                <div class="console-line"><span class="console-prompt">></span> Запустите функцию, чтобы увидеть вывод</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Функция умножения -->
+                <div class="function-card" id="multiply">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Функция multiply()</h3>
+                            <p class="card-subtitle">Умножает два числа</p>
+                            <div class="tag">Математика</div>
+                        </div>
+                    </div>
+                    
+                    <div class="two-columns">
+                        <div class="input-group">
+                            <label class="input-label">Первое число</label>
+                            <input type="number" class="form-input" id="multiplyA" value="15">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Второе число</label>
+                            <input type="number" class="form-input" id="multiplyB" value="6">
+                        </div>
+                    </div>
+                    
+                    <button class="btn-card" id="multiplyBtn">Выполнить умножение</button>
+                    
+                    <div class="result-container" id="multiplyResult">
+                        <div class="result-title">Результат</div>
+                        <div class="result-content" id="multiplyResultContent"></div>
+                    </div>
+                </div>
+
+                <!-- Функция обрезки пробелов -->
+                <div class="function-card" id="trimSpaces">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-cut"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Функция trimSpaces()</h3>
+                            <p class="card-subtitle">Удаляет пробелы в начале и конце строки</p>
+                            <div class="tag">Строки</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Введите строку с пробелами</label>
+                        <input type="text" class="form-input" id="trimInput" value="   Пример строки   ">
+                    </div>
+                    
+                    <button class="btn-card" id="trimBtn">Удалить пробелы</button>
+                    
+                    <div class="result-container" id="trimResult">
+                        <div class="result-title">Результат</div>
+                        <div class="result-content" id="trimResultContent"></div>
+                    </div>
+                </div>
+
+                <!-- Функция проверки ключа -->
+                <div class="function-card" id="hasKey">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Функция hasKey()</h3>
+                            <p class="card-subtitle">Проверяет наличие ключа в объекте</p>
+                            <div class="tag">Объекты</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Объект JSON</label>
+                        <input type="text" class="form-input" id="hasKeyObj" value='{"name": "Иван", "age": 28, "city": "Москва"}'>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Ключ для проверки</label>
+                        <input type="text" class="form-input" id="hasKeyKey" value="city">
+                    </div>
+                    
+                    <button class="btn-card" id="hasKeyBtn">Проверить наличие ключа</button>
+                    
+                    <div class="result-container" id="hasKeyResult">
+                        <div class="result-title">Результат</div>
+                        <div class="result-content" id="hasKeyResultContent"></div>
+                    </div>
+                </div>
+
+                <!-- Функция получения последнего элемента -->
+                <div class="function-card" id="lastElement">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Функция getLastElement()</h3>
+                            <p class="card-subtitle">Возвращает последний элемент массива</p>
+                            <div class="tag">Массивы</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Массив JSON</label>
+                        <input type="text" class="form-input" id="lastElementInput" value='["JavaScript", "Python", "Java", "C++", "PHP"]'>
+                    </div>
+                    
+                    <button class="btn-card" id="lastElementBtn">Получить последний элемент</button>
+                    
+                    <div class="result-container" id="lastElementResult">
+                        <div class="result-title">Результат</div>
+                        <div class="result-content" id="lastElementResultContent"></div>
+                    </div>
+                </div>
+
+                <!-- Функция сравнения -->
+                <div class="function-card" id="isSame">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-equals"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Функция isSame()</h3>
+                            <p class="card-subtitle">Сравнивает значения с учетом типов</p>
+                            <div class="tag">Сравнение</div>
+                        </div>
+                    </div>
+                    
+                    <div class="two-columns">
+                        <div class="input-group">
+                            <label class="input-label">Первое значение</label>
+                            <input type="text" class="form-input" id="isSameA" value="5">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Второе значение</label>
+                            <input type="text" class="form-input" id="isSameB" value="5">
+                        </div>
+                    </div>
+                    
+                    <button class="btn-card" id="isSameBtn">Сравнить значения</button>
+                    
+                    <div class="result-container" id="isSameResult">
+                        <div class="result-title">Результат</div>
+                        <div class="result-content" id="isSameResultContent"></div>
+                    </div>
+                </div>
+
+                <!-- Функция подсчета отрицательных чисел -->
+                <div class="function-card" id="countNegatives">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Функция countNegatives()</h3>
+                            <p class="card-subtitle">Подсчитывает отрицательные числа в массиве</p>
+                            <div class="tag">Массивы, Математика</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Числа через запятую</label>
+                        <input type="text" class="form-input" id="countNegativesInput" value="12, -5, 0, 8, -3.2, 7, -1, 0, -9, 4.5, -2">
+                    </div>
+                    
+                    <button class="btn-card" id="countNegativesBtn">Подсчитать отрицательные</button>
+                    
+                    <div class="result-container" id="countNegativesResult">
+                        <div class="result-title">Результат</div>
+                        <div class="result-content" id="countNegativesResultContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>JS Functions</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Главная</a></li>
+                        <li><a href="#functions">Функции</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Ресурсы</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">Поддержка</a></li>
+                        <li><a href="#">Частые вопросы</a></li>
+                        <li><a href="#">Сообщество</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Компания</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#">Карьера</a></li>
+                        <li><a href="#">Партнеры</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Свяжитесь с нами</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:hello@jsfunctions.com">hello@jsfunctions.com</a></li>
+                        <li><a href="tel:+79991234567">+375 (44) 123-45-67</a></li>
+                        <li>Минск, ул. Например, 1</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 JS Functions. Все права защищены.
+                </div>
+                <div class="social-links">
+                    <a href="mailto:hello@jsfunctions.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Функция для плавной прокрутки
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Анимация появления результатов
+        function showResult(element, content) {
+            const resultElement = document.getElementById(element);
+            const contentElement = document.getElementById(element + 'Content');
+            
+            if (contentElement) {
+                contentElement.innerHTML = content;
+            }
+            resultElement.classList.add('show', 'fade-in');
+            
+            // Скрыть через 10 секунд
+            setTimeout(() => {
+                resultElement.classList.remove('show');
+            }, 10000);
+        }
+
+        // 1. Функция logEven() - ТОЛЬКО выводит чётные числа в консоль
+        function logEven(array) {
+            for (let i = 0; i < array.length; i++) {
+                if (typeof array[i] === 'number' && array[i] % 2 === 0) {
+                    console.log(array[i]);
+                }
+            }
+        }
+
+        // Вспомогательная функция для парсинга ввода
+        function parseArrayInput(input) {
+            return input.split(',')
+                .map(item => item.trim())
+                .filter(item => item !== '')
+                .map(item => {
+                    const num = Number(item);
+                    if (!isNaN(num) && item.trim() !== '') {
+                        return num;
+                    }
+                    return item;
+                });
+        }
+
+        // Функция для обновления вывода в консоли на странице
+        function updateConsoleOutput(array) {
+            const output = document.getElementById('logEvenConsole');
+            output.innerHTML = '';
+            
+            const header = document.createElement('div');
+            header.className = 'console-line';
+            header.innerHTML = `<span class="console-prompt">></span> <span class="console-even">Функция logEven() выводит только чётные числа:</span>`;
+            output.appendChild(header);
+            
+            let hasEvenNumbers = false;
+            
+            array.forEach((item, index) => {
+                if (typeof item === 'number' && item % 2 === 0) {
+                    const line = document.createElement('div');
+                    line.className = 'console-line';
+                    line.innerHTML = `<span class="console-prompt">></span> <span class="console-even">${item}</span>`;
+                    output.appendChild(line);
+                    hasEvenNumbers = true;
+                }
+            });
+            
+            if (!hasEvenNumbers) {
+                const line = document.createElement('div');
+                line.className = 'console-line';
+                line.innerHTML = `<span class="console-prompt">></span> <span style="color: #ff6b6b;">Чётные числа в массиве не найдены</span>`;
+                output.appendChild(line);
+            }
+            
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Обработчик для logEven
+        document.getElementById('logEvenBtn').addEventListener('click', function() {
+            const input = document.getElementById('logEvenInput').value;
+            const array = parseArrayInput(input);
+            
+            // Вызываем функцию logEven() - она выводит только чётные числа в консоль
+            logEven(array);
+            
+            const resultContainer = document.getElementById('logEvenResult');
+            resultContainer.style.display = 'block';
+            resultContainer.classList.add('fade-in');
+            
+            updateConsoleOutput(array);
+        });
+
+        // 2. Функция multiply()
+        function multiply(a, b) {
+            return a * b;
+        }
+        
+        document.getElementById('multiplyBtn').addEventListener('click', function() {
+            const a = parseFloat(document.getElementById('multiplyA').value) || 0;
+            const b = parseFloat(document.getElementById('multiplyB').value) || 0;
+            const result = multiply(a, b);
+            
+            showResult('multiplyResult', `${a} × ${b} = <span class="highlight">${result}</span>`);
+        });
+
+        // 3. Функция trimSpaces()
+        function trimSpaces(str) {
+            let start = 0;
+            while (start < str.length && str[start] === ' ') {
+                start++;
+            }
+            
+            let end = str.length - 1;
+            while (end >= 0 && str[end] === ' ') {
+                end--;
+            }
+            
+            if (start > end) return "";
+            return str.substring(start, end + 1);
+        }
+        
+        document.getElementById('trimBtn').addEventListener('click', function() {
+            const input = document.getElementById('trimInput').value;
+            const result = trimSpaces(input);
+            
+            const originalLength = input.length;
+            const resultLength = result.length;
+            const spacesRemoved = originalLength - resultLength;
+            
+            showResult('trimResult', `
+                Результат: "<span class="highlight">${result}</span>"<br>
+                <span style="font-size: 12px; color: #666;">
+                    Удалено пробелов: ${spacesRemoved} (${originalLength} → ${resultLength} символов)
+                </span>
+            `);
+        });
+
+        // 4. Функция hasKey()
+        function hasKey(obj, key) {
+            if (obj === null || obj === undefined) {
+                return false;
+            }
+            return key in obj;
+        }
+        
+        document.getElementById('hasKeyBtn').addEventListener('click', function() {
+            const objInput = document.getElementById('hasKeyObj').value;
+            const key = document.getElementById('hasKeyKey').value;
+            
+            try {
+                const obj = JSON.parse(objInput);
+                const result = hasKey(obj, key);
+                
+                showResult('hasKeyResult', `
+                    Ключ "<span class="highlight">${key}</span>" ${result ? 'найден' : 'не найден'} в объекте.
+                    <div style="margin-top: 8px; background: rgba(0,0,0,0.05); padding: 8px; border-radius: 4px; font-size: 12px;">
+                        ${JSON.stringify(obj, null, 2)}
+                    </div>
+                `);
+            } catch (e) {
+                showResult('hasKeyResult', `<span style="color: var(--red);">Ошибка: ${e.message}</span>`);
+            }
+        });
+
+        // 5. Функция getLastElement()
+        function getLastElement(array) {
+            if (!Array.isArray(array)) {
+                throw new Error("Аргумент должен быть массивом");
+            }
+            if (array.length === 0) {
+                return undefined;
+            }
+            return array[array.length - 1];
+        }
+        
+        document.getElementById('lastElementBtn').addEventListener('click', function() {
+            const input = document.getElementById('lastElementInput').value;
+            
+            try {
+                const array = JSON.parse(input);
+                const result = getLastElement(array);
+                
+                const formattedResult = typeof result === 'string' ? `"${result}"` : result;
+                const arrayLength = array.length;
+                
+                showResult('lastElementResult', `
+                    Последний элемент: <span class="highlight">${formattedResult}</span><br>
+                    <span style="font-size: 12px; color: #666;">
+                        Всего элементов в массиве: ${arrayLength}
+                    </span>
+                `);
+            } catch (e) {
+                showResult('lastElementResult', `<span style="color: var(--red);">Ошибка: ${e.message}</span>`);
+            }
+        });
+
+        // 6. Функция isSame()
+        function isSame(a, b) {
+            if (a === b) {
+                if (a === 0 && b === 0) {
+                    return 1 / a === 1 / b;
+                }
+                if (a !== a && b !== b) {
+                    return true;
+                }
+                return true;
+            }
+            return false;
+        }
+        
+        document.getElementById('isSameBtn').addEventListener('click', function() {
+            const a = document.getElementById('isSameA').value;
+            const b = document.getElementById('isSameB').value;
+            
+            let valA = a;
+            let valB = b;
+            
+            if (!isNaN(a) && a.trim() !== '') valA = Number(a);
+            if (!isNaN(b) && b.trim() !== '') valB = Number(b);
+            
+            if (a.toLowerCase() === 'null') valA = null;
+            if (b.toLowerCase() === 'null') valB = null;
+            if (a.toLowerCase() === 'undefined') valA = undefined;
+            if (b.toLowerCase() === 'undefined') valB = undefined;
+            if (a.toLowerCase() === 'nan') valA = NaN;
+            if (b.toLowerCase() === 'nan') valB = NaN;
+            
+            const result = isSame(valA, valB);
+            
+            showResult('isSameResult', `
+                Результат: <span class="highlight">${result ? 'true' : 'false'}</span><br>
+                <span style="font-size: 12px; color: #666;">
+                    A: ${JSON.stringify(valA)} (${typeof valA})<br>
+                    B: ${JSON.stringify(valB)} (${typeof valB})
+                </span>
+            `);
+        });
+
+        // 7. Функция countNegatives()
+        function countNegatives(array) {
+            if (!Array.isArray(array)) return 0;
+            let count = 0;
+            for (let i = 0; i < array.length; i++) {
+                if (typeof array[i] === 'number' && array[i] < 0) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        
+        document.getElementById('countNegativesBtn').addEventListener('click', function() {
+            const input = document.getElementById('countNegativesInput').value;
+            
+            const array = input.split(',')
+                .map(item => item.trim())
+                .filter(item => item !== '')
+                .map(item => parseFloat(item))
+                .filter(item => !isNaN(item));
+            
+            const result = countNegatives(array);
+            const positives = array.filter(num => num > 0).length;
+            const zeros = array.filter(num => num === 0).length;
+            const total = array.length;
+            
+            showResult('countNegativesResult', `
+                Отрицательных чисел: <span class="highlight">${result}</span><br>
+                <span style="font-size: 12px; color: #666;">
+                    Всего: ${total} | Положительных: ${positives} | Нулей: ${zeros}
+                </span>
+            `);
+        });
+
+        // Инициализация демонстраций при загрузке страницы
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.getElementById('logEvenBtn').click();
+                document.getElementById('multiplyBtn').click();
+                document.getElementById('trimBtn').click();
+                document.getElementById('hasKeyBtn').click();
+                document.getElementById('lastElementBtn').click();
+                document.getElementById('isSameBtn').click();
+                document.getElementById('countNegativesBtn').click();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
